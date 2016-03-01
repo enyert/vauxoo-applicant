@@ -19,6 +19,19 @@ CREATE TABLE employee (
     id_empl_dept INTEGER REFERENCES employee_department(id)
 );
 
+CREATE TABLE hobby (
+    id SERIAL primary key,
+    name VARCHAR(40) not null,
+    description VARCHAR(200) not null,
+    UNIQUE(name)
+);
+
+CREATE TABLE employee_hobby (
+    employee_id INTEGER REFERENCES employee(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    hobby_id INTEGER REFERENCES hobby(id) ON UPDATE CASCADE,
+    CONSTRAINT employee_hobby_pkey PRIMARY KEY (employee_id, hobby_id)
+);
+
 INSERT INTO employee_department (name, description)
 VALUES
     ('Security', 'Security Department'),
@@ -34,3 +47,19 @@ VALUES
     ('Almazbek', 'Atambayev', 3),
     ('Mahamadou', 'Issoufu', 2),
     ('Andrzej', 'Duda', 4);
+
+INSERT INTO hobby (name, description)
+VALUES
+    ('Table Tennis', 'Only for chinese people'),
+    ('Baseball', 'Only for fat people'),
+    ('Volleyball', 'If you are not a libero then you need to be a giant');
+
+INSERT INTO employee_hobby (employee_id, hobby_id)
+VALUES
+    (1, 1),
+    (1, 2),
+    (1, 3),
+    (2, 2),
+    (2, 1),
+    (3, 3),
+    (3, 2);
