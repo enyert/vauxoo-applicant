@@ -16,7 +16,9 @@ CREATE TABLE employee (
     id BIGSERIAL primary key,
     first_name VARCHAR(40) not null,
     last_name VARCHAR(40) not null,
-    id_empl_dept INTEGER REFERENCES employee_department(id)
+    id_empl_dept INTEGER REFERENCES employee_department(id),
+    boss_assigned_id INTEGER REFERENCES employee(id),
+    CHECK (boss_assigned_id <> id)
 );
 
 CREATE TABLE hobby (
@@ -27,9 +29,10 @@ CREATE TABLE hobby (
 );
 
 CREATE TABLE employee_hobby (
+    id SERIAL primary key,
     employee_id INTEGER REFERENCES employee(id) ON UPDATE CASCADE ON DELETE CASCADE,
     hobby_id INTEGER REFERENCES hobby(id) ON UPDATE CASCADE,
-    CONSTRAINT employee_hobby_pkey PRIMARY KEY (employee_id, hobby_id)
+    UNIQUE(employee_id, hobby_id)
 );
 
 INSERT INTO employee_department (name, description)
@@ -41,12 +44,12 @@ VALUES
     ('Design', 'Graphical Designers'),
     ('Big Bosses', 'Our big bosses');
 
-INSERT INTO employee (first_name, last_name, id_empl_dept)
+INSERT INTO employee (first_name, last_name, id_empl_dept, boss_assigned_id)
 VALUES
-    ('Fuad', 'Massum', 1),
-    ('Almazbek', 'Atambayev', 3),
-    ('Mahamadou', 'Issoufu', 2),
-    ('Andrzej', 'Duda', 4);
+    ('Fuad', 'Massum', 1, 2),
+    ('Almazbek', 'Atambayev', 3, null),
+    ('Mahamadou', 'Issoufu', 2, 2),
+    ('Andrzej', 'Duda', 4, 2);
 
 INSERT INTO hobby (name, description)
 VALUES
