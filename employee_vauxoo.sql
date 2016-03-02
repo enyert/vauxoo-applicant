@@ -21,17 +21,17 @@ CREATE TABLE employee (
     CHECK (boss_assigned_id <> id)
 );
 
-CREATE TABLE hobby (
+CREATE TABLE employee_hobby (
     id SERIAL primary key,
     name VARCHAR(40) not null,
     description VARCHAR(200) not null,
     UNIQUE(name)
 );
 
-CREATE TABLE employee_hobby (
-    id SERIAL primary key,
+CREATE TABLE employee_hobby_mm (
+    --id SERIAL primary key,
     employee_id INTEGER REFERENCES employee(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    hobby_id INTEGER REFERENCES hobby(id) ON UPDATE CASCADE,
+    hobby_id INTEGER REFERENCES employee_hobby(id) ON UPDATE CASCADE,
     UNIQUE(employee_id, hobby_id)
 );
 
@@ -51,17 +51,16 @@ VALUES
     ('Mahamadou', 'Issoufu', 2, 2),
     ('Andrzej', 'Duda', 4, 2);
 
-INSERT INTO hobby (name, description)
+INSERT INTO employee_hobby (name, description)
 VALUES
     ('Table Tennis', 'Only for chinese people'),
     ('Baseball', 'Only for fat people'),
     ('Volleyball', 'If you are not a libero then you need to be a giant');
 
-INSERT INTO employee_hobby (employee_id, hobby_id)
+INSERT INTO employee_hobby_mm (employee_id, hobby_id)
 VALUES
     (1, 1),
     (1, 2),
-    (1, 3),
     (2, 2),
     (2, 1),
     (3, 3),
